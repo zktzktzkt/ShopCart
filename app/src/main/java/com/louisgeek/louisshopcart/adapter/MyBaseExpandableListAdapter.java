@@ -300,10 +300,11 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
-        // return true;
     }
 
-    //供全选按钮调用
+    /**
+     * 设置所有的item选中
+     */
     public void setupAllChecked(boolean isChecked) {
 
         for (int i = 0; i < parentMapList.size(); i++) {
@@ -320,6 +321,9 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         dealPrice();
     }
 
+    /**
+     * 设置某个分组下的所有child选中
+     */
     private void setupOneParentAllChildChecked(boolean isChecked, int groupPosition) {
         StoreBean storeBean = (StoreBean) parentMapList.get(groupPosition).get("parentName");
         storeBean.setIsChecked(isChecked);
@@ -333,27 +337,36 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         dealPrice();
     }
 
+    /**
+     * 判断一个分组下的child是否全部选中
+     */
     public boolean dealOneParentAllChildIsChecked(int groupPosition) {
         List<Map<String, Object>> childMapList = childMapList_list.get(groupPosition);
         for (int j = 0; j < childMapList.size(); j++) {
             GoodsBean goodsBean = (GoodsBean) childMapList.get(j).get("childName");
             if (!goodsBean.isChecked()) {
-                return false;//如果有一个没选择  就false
+                return false;   //如果有一个没选择  就false
             }
         }
         return true;
     }
 
+    /**
+     * 判断所有的parent是否选中
+     */
     public boolean dealAllParentIsChecked() {
         for (int i = 0; i < parentMapList.size(); i++) {
             StoreBean storeBean = (StoreBean) parentMapList.get(i).get("parentName");
             if (!storeBean.isChecked()) {
-                return false;//如果有一个没选择  就false
+                return false;   //如果有一个没选择  就false
             }
         }
         return true;
     }
 
+    /**
+     * 合计
+     */
     public void dealPrice() {
         totalCount = 0;
         totalPrice = 0.00;
@@ -365,7 +378,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
                 int count = goodsBean.getCount();
                 double discountPrice = goodsBean.getDiscountPrice();
                 if (goodsBean.isChecked()) {
-                    totalCount++;//单品多数量只记1
+                    totalCount++;   //单品多数量只记1
                     totalPrice += discountPrice * count;
                 }
 
@@ -375,7 +388,9 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         onGoodsCheckedChangeListener.onGoodsCheckedChange(totalCount, totalPrice);
     }
 
-    //供总编辑按钮调用
+    /**
+     * 设置所有的item进入编辑模式
+     */
     public void setupEditingAll(boolean isEditingAll) {
         for (int i = 0; i < parentMapList.size(); i++) {
             StoreBean storeBean = (StoreBean) parentMapList.get(i).get("parentName");
@@ -390,16 +405,22 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * 判断某个分组是否进入了编辑状态
+     */
     public boolean dealAllEditingIsEditing() {
         for (int i = 0; i < parentMapList.size(); i++) {
             StoreBean storeBean = (StoreBean) parentMapList.get(i).get("parentName");
             if (storeBean.isEditing()) {//!!!
-                return true;//如果有一个是编辑状态  就true
+                return true;
             }
         }
         return false;
     }
 
+    /**
+     * 设置某个分组进入编辑模式
+     */
     public void setupEditing(int groupPosition) {
         StoreBean storeBean = (StoreBean) parentMapList.get(groupPosition).get("parentName");
         boolean isEditing = !storeBean.isEditing();
@@ -412,6 +433,9 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * 添加一个数量
+     */
     public void dealAdd(GoodsBean goodsBean) {
         int count = goodsBean.getCount();
         count++;
@@ -420,6 +444,9 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         dealPrice();
     }
 
+    /**
+     * 减少一个数量
+     */
     public void dealReduce(GoodsBean goodsBean) {
         int count = goodsBean.getCount();
         if (count == 1) {
@@ -431,6 +458,9 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         dealPrice();
     }
 
+    /**
+     * 删除某个分组
+     */
     public void removeOneGood(int groupPosition, int childPosition) {
         List<Map<String, Object>> childMapList = childMapList_list.get(groupPosition);
         childMapList.remove(childPosition);
@@ -451,6 +481,9 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         dealPrice();
     }
 
+    /**
+     * 删除所有的商品
+     */
     public void removeGoods() {
 
         for (int i = parentMapList.size() - 1; i >= 0; i--) {//倒过来遍历  remove
