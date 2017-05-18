@@ -132,7 +132,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
             groupViewHolder.id_tv_edit.setText(EDITING);
         }
 
-        /**parent编辑按钮监听*/
+        /**parent编辑监听*/
         groupViewHolder.id_tv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +156,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-
+        /**parent选中监听*/
         groupViewHolder.id_cb_select_parent.setChecked(storeBean.isChecked());
         final boolean nowBeanChecked = storeBean.isChecked();
         groupViewHolder.id_cb_select_parent.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +177,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.child_layout, null);
             childViewHolder = new ChildViewHolder();
+
             childViewHolder.tv_items_child = (TextView) convertView
                     .findViewById(R.id.tv_items_child);
             childViewHolder.id_cb_select_child = (CheckBox) convertView
@@ -240,6 +241,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         childViewHolder.id_tv_price_now.setText(String.format(context.getString(R.string.price), priceNow));
         childViewHolder.id_tv_des_now.setText(goodsBean.getDesc());
 
+        //选中某一项child
         childViewHolder.id_cb_select_child.setChecked(goodsBean.isChecked());
         childViewHolder.id_cb_select_child.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,6 +278,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
         });
         childViewHolder.id_iv_reduce.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
                 dealReduce(goodsBean);
             }
@@ -306,7 +309,6 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
      * 设置所有的item选中
      */
     public void setupAllChecked(boolean isChecked) {
-
         for (int i = 0; i < parentMapList.size(); i++) {
             StoreBean storeBean = (StoreBean) parentMapList.get(i).get("parentName");
             storeBean.setIsChecked(isChecked);
@@ -318,6 +320,7 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
         notifyDataSetChanged();
+
         dealPrice();
     }
 
@@ -485,7 +488,6 @@ public class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
      * 删除所有的商品
      */
     public void removeGoods() {
-
         for (int i = parentMapList.size() - 1; i >= 0; i--) {//倒过来遍历  remove
             StoreBean storeBean = (StoreBean) parentMapList.get(i).get("parentName");
             if (storeBean.isChecked()) {
